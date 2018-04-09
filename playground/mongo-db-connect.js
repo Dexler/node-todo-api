@@ -7,18 +7,18 @@ MongoClient.connect('mongodb://localhost:27017', (err, client) => {
 
     const db = client.db('TodoApp');
 
+    db.collection('Todos').insertOne({
+        text: 'Something to do',
+        complite: false
+    }, (err, result) => {
+        if (err) {
+            console.log('Some error here:', err);
+        }
 
+        console.log(JSON.stringify(result.ops, undefined, 2));
+    });
 
-    // db.collection('Todos').insertOne({
-    //     text: 'Something to do',
-    //     complite: false
-    // }, (err, result) => {
-    //     if (err) {
-    //         console.log('Some error here:', err);
-    //     }
-
-    //     console.log(JSON.stringify(result.ops, undefined, 2));
-    // });
+    
 
     db.collection('Users').insertOne({
         name: 'Daniel',
@@ -31,7 +31,6 @@ MongoClient.connect('mongodb://localhost:27017', (err, client) => {
 
         console.log(result.ops[0]._id.getTimestamp());
     });
-
 
     client.close();
 });
