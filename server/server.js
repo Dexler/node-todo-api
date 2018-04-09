@@ -23,6 +23,14 @@ connect.then((client) => {
         });
     });
 
+    app.get('/todos', (req, res) => {
+        db.collection('Todos').find().toArray((err, docs) => {
+            res.send({
+                docs
+            });
+        });
+    });
+
 }).catch((e) => {
     console.log('Unable to connect to MongoDB server');
 });
