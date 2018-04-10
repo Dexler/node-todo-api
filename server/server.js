@@ -1,7 +1,7 @@
-const connect = require('./db/connect');
-const express = require('express');
-const bodyParser = require('body-parser');
-
+const {ObjectID} = require('mongodb'),
+       express = require('express'),
+       bodyParser = require('body-parser'),
+       connect = require('./db/connect');
 
 var app = express();
 
@@ -28,6 +28,23 @@ connect.then((client) => {
             res.send({
                 docs
             });
+        });
+    });
+
+    app.get('/todos/:id', (req, res) => {
+
+        var id = req.params.id;
+
+        if (!ObjectID.isValid(id)) {
+            return res.status(400).send('Incorrect ID, what the fuck, dude ?!?');
+        }
+
+        db.collection('Todos').findOne({
+            _id: new ObjectID(id)
+        }).then((doc) => {
+            res.send(doc);
+        }).catch((e) => {
+            res.status(400).send('UPS my friend!', e.message);
         });
     });
 
